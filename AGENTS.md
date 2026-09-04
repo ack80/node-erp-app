@@ -100,10 +100,10 @@ infra/
 
 El proyecto cuenta con dos ramas que representan dos niveles de aprendizaje e ingeniería:
 
-1. **Rama `master` (Old-School / Bare-Metal Foundation):**
+1. **Rama `main` (Old-School / Bare-Metal Foundation):**
    - **Enfoque:** 100% sin frameworks, Node.js nativo (`node:http`), JavaScript puro ESM, MySQL con `mysql2/promise` directo, router y contenedor DI manuales.
    - **Objetivo:** Comprender qué hace un framework por debajo y dominar los fundamentos puros.
-   - **Regla en `master`:** No instalar frameworks ni ORMs.
+   - **Regla en `main`:** No instalar frameworks ni ORMs.
 
 2. **Rama `feature/new-school` (New-School / Modern Enterprise Stack):**
    - **Enfoque:** TypeScript estricto, **Hono** (Web Standards / Fetch API), **Drizzle ORM** (Type-safe SQL builder sobre MySQL), validación integrada con `@hono/zod-validator`, y testing tipado con Vitest.
@@ -115,7 +115,7 @@ El proyecto cuenta con dos ramas que representan dos niveles de aprendizaje e in
 ## Cómo debe comportarse un agente en este repo
 
 1. **Identificar la rama actual:**
-   - Si está en `master`, **respetar la regla zero-frameworks** (no sugerir ni instalar Express, NestJS, Hono, Fastify, Prisma, etc.).
+   - Si está en `main`, **respetar la regla zero-frameworks** (no sugerir ni instalar Express, NestJS, Hono, Fastify, Prisma, etc.).
    - Si está en `feature/new-school`, seguir el stack moderno tipado (TypeScript + Hono + Drizzle ORM + Zod).
 2. **Respetar la cohesión por feature** — nuevo código de un feature (incluidos sus tests) va dentro de `features/<feature>/`, no en carpetas centralizadas.
 3. **No mezclar entornos de Terraform** — cualquier cambio de infra debe declarar explícitamente si es para `development` o `production`, nunca aplicar sin especificar.

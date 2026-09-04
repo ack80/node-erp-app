@@ -6,7 +6,7 @@ Este documento define la comparación formal, fundamentación teórica y decisio
 
 ## 1. Filosofía y Motivación
 
-| Dimensión | Old-School (Branch `master`) | New-School (Branch `feature/new-school`) |
+| Dimensión | Old-School (Branch `main`) | New-School (Branch `feature/new-school`) |
 |---|---|---|
 | **Propósito Principal** | Entender las tripas del motor (qué hace un framework por debajo). | Entregar software de grado empresarial con máxima velocidad, mantenibilidad y cero errores de tipo. |
 | **Abstracción** | Mínima indispensable ("A ring pelado"). | Abstracciones modernas de alto rendimiento y cero costo en runtime (*Zero-Cost Abstractions*). |
@@ -103,7 +103,7 @@ userRoutes.post('/', zValidator('json', createUserSchema), async (c) => {
 
 ## 4. Guía de Convivencia entre Ramas
 
-1. **Rama `master` (Old-School Foundation):**
+1. **Rama `main` (Old-School Foundation):**
    - Se mantiene intacta como referencia de ingeniería base.
    - Demuestra el dominio de los fundamentos de Node.js sin frameworks ni abstracciones automáticas.
 2. **Rama `feature/new-school` (Modern Enterprise Stack):**
