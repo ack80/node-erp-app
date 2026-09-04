@@ -1,0 +1,13 @@
+node_modules
+.env.dev
+.env.pro
+.env.test
+
+infra/terraform/.terraform/
+infra/terraform/**/.terraform/
+infra/terraform/terraform.tfvars
+infra/terraform/*.tfstate*
+infra/terraform/**/*.tfstate*
+infra/terraform/**/.terraform/
+infra/terraform/**/*.tfstate*
+infra/terraform/environments/*/terraform.tfvars

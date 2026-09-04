@@ -1,0 +1,4 @@
+# all:
+#   hosts:
+#     serverwct:
+#       ansible_host: <IP_o_hostname>

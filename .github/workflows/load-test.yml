@@ -1,0 +1,28 @@
+# k6, manual o nightly contra staging
+
+name: Load Test (k6)
+
+on:
+  workflow_dispatch:        # botón "Run workflow" manual en GitHub
+  schedule:
+    - cron: "0 3 * * *"     # todas las noches a las 3am UTC
+
+jobs:
+  k6-load-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run k6 smoke test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: test/load/smoke-test.js
+        env:
+          TARGET_URL: ${{ secrets.STAGING_URL }}
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-results
+          path: k6-results.json

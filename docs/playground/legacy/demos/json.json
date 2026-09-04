@@ -1,0 +1,10 @@
+{
+    "id": "12789653", 
+    "name": "Douglas",
+    "lastName": "Rujana",
+    "phone": "0963244030",
+    "address": "Bellavista",
+    "wight": 65,
+    "isDeveloper": true,
+    "skills": ["HTM", "CSS", "JavaScript", "TypeScript", "Svelete","Tailwind"]
+}
