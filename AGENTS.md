@@ -96,30 +96,33 @@ infra/
 
 ---
 
-## Ramas y Modos de Desarrollo (Old-School vs. New-School)
+## Paradigmas de Arquitectura y Ramas (100% Capa Gratuita / $0 USD)
 
-El proyecto cuenta con dos ramas que representan dos niveles de aprendizaje e ingeniería:
+El proyecto implementa dos paradigmas de ingeniería de software distribuidos en dos ramas:
 
-1. **Rama `main` (Old-School / Bare-Metal Foundation):**
-   - **Enfoque:** 100% sin frameworks, Node.js nativo (`node:http`), JavaScript puro ESM, MySQL con `mysql2/promise` directo, router y contenedor DI manuales.
-   - **Objetivo:** Comprender qué hace un framework por debajo y dominar los fundamentos puros.
-   - **Regla en `main`:** No instalar frameworks ni ORMs.
+1. **Rama `main` — Bare-Metal Persistent Architecture:**
+   - **Enfoque:** 100% sin frameworks, Node.js nativo (`node:http`), JavaScript puro ESM, MySQL gestionado en **Aiven ($0)** con `mysql2/promise` directo, router y contenedor DI manuales.
+   - **Despliegue:** Contenedor Docker desplegado en **Render (Web Service Free)** o VPS (`serverwct`).
+   - **Objetivo:** Comprender qué hace un framework por debajo, dominar sockets TCP, buffers y el runtime puro de Node.js.
+   - **Regla en `main`:** Cero frameworks y cero ORMs.
 
-2. **Rama `feature/new-school` (New-School / Modern Enterprise Stack):**
-   - **Enfoque:** TypeScript estricto, **Hono** (Web Standards / Fetch API), **Drizzle ORM** (Type-safe SQL builder sobre MySQL), validación integrada con `@hono/zod-validator`, y testing tipado con Vitest.
-   - **Objetivo:** Demostrar cómo se diseña una solución moderna de grado de producción, con End-to-End Type Safety, DX ágil y cero boilerplate innecesario.
-   - Detalle completo documentado en `docs/sdlc/003-design/architecture-evolution-old-vs-new-school.md`.
+2. **Rama `feature/new-school` — Serverless Edge & Type-Safe Platform:**
+   - **Enfoque:** TypeScript estricto, **Hono** (Web Standards / Fetch API), **Neon Serverless PostgreSQL ($0)** con **Drizzle ORM** (Type-safe SQL builder), y validación con `@hono/zod-validator`.
+   - **Despliegue:** **Vercel Functions (Hobby $0)** con auto-scale a cero y branching instantáneo de base de datos en Neon.
+   - **Objetivo:** Demostrar cómo se diseña una solución moderna de grado empresarial con End-to-End Type Safety, máxima DX y cero costo operativo en reposo.
+   - Detalle técnico documentado en `docs/sdlc/003-design/architecture-evolution-old-vs-new-school.md`.
 
 ---
 
 ## Cómo debe comportarse un agente en este repo
 
 1. **Identificar la rama actual:**
-   - Si está en `main`, **respetar la regla zero-frameworks** (no sugerir ni instalar Express, NestJS, Hono, Fastify, Prisma, etc.).
-   - Si está en `feature/new-school`, seguir el stack moderno tipado (TypeScript + Hono + Drizzle ORM + Zod).
+   - Si está en `main`: **Respetar la regla zero-frameworks** (no sugerir ni instalar Express, NestJS, Hono, Fastify, Prisma, etc.) y persistencia en MySQL.
+   - Si está en `feature/new-school`: Seguir el stack moderno tipado (TypeScript + Hono + Drizzle ORM + Neon PostgreSQL + Zod).
 2. **Respetar la cohesión por feature** — nuevo código de un feature (incluidos sus tests) va dentro de `features/<feature>/`, no en carpetas centralizadas.
-3. **No mezclar entornos de Terraform** — cualquier cambio de infra debe declarar explícitamente si es para `development` o `production`, nunca aplicar sin especificar.
+3. **No mezclar entornos de Terraform** — cualquier cambio de infra debe declarar explícitamente si es para `development` o `production`.
 4. **Nunca commitear secretos** — API tokens, passwords, `.env` reales van siempre ignorados por Git (solo versionar `.env.example`).
 5. **Priorizar explicabilidad sobre brevedad** — preferir código explícito, tipado y autodocumentado.
+
 
 
