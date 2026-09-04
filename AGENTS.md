@@ -96,11 +96,30 @@ infra/
 
 ---
 
+## Ramas y Modos de Desarrollo (Old-School vs. New-School)
+
+El proyecto cuenta con dos ramas que representan dos niveles de aprendizaje e ingeniería:
+
+1. **Rama `master` (Old-School / Bare-Metal Foundation):**
+   - **Enfoque:** 100% sin frameworks, Node.js nativo (`node:http`), JavaScript puro ESM, MySQL con `mysql2/promise` directo, router y contenedor DI manuales.
+   - **Objetivo:** Comprender qué hace un framework por debajo y dominar los fundamentos puros.
+   - **Regla en `master`:** No instalar frameworks ni ORMs.
+
+2. **Rama `feature/new-school` (New-School / Modern Enterprise Stack):**
+   - **Enfoque:** TypeScript estricto, **Hono** (Web Standards / Fetch API), **Drizzle ORM** (Type-safe SQL builder sobre MySQL), validación integrada con `@hono/zod-validator`, y testing tipado con Vitest.
+   - **Objetivo:** Demostrar cómo se diseña una solución moderna de grado de producción, con End-to-End Type Safety, DX ágil y cero boilerplate innecesario.
+   - Detalle completo documentado en `docs/sdlc/003-design/architecture-evolution-old-vs-new-school.md`.
+
+---
+
 ## Cómo debe comportarse un agente en este repo
 
-1. **No sugerir frameworks** (Express, NestJS, Prisma, TypeORM, etc.) como solución por defecto — el punto del proyecto es evitarlos. Si un framework parece "la solución obvia", es señal de que hay que implementar esa pieza a mano y documentar el porqué.
-2. **Respetar la cohesión por feature** — nuevo código de un feature (incluidos sus tests unitarios) va dentro de `features/<feature>/`, no en carpetas centralizadas.
+1. **Identificar la rama actual:**
+   - Si está en `master`, **respetar la regla zero-frameworks** (no sugerir ni instalar Express, NestJS, Hono, Fastify, Prisma, etc.).
+   - Si está en `feature/new-school`, seguir el stack moderno tipado (TypeScript + Hono + Drizzle ORM + Zod).
+2. **Respetar la cohesión por feature** — nuevo código de un feature (incluidos sus tests) va dentro de `features/<feature>/`, no en carpetas centralizadas.
 3. **No mezclar entornos de Terraform** — cualquier cambio de infra debe declarar explícitamente si es para `development` o `production`, nunca aplicar sin especificar.
-4. **Nunca commitear secretos** — API tokens, passwords, `.tfvars` reales van siempre ignorados por Git.
-5. **Priorizar explicabilidad sobre brevedad** — dado que el objetivo es aprender, preferir código explícito y comentado sobre código "elegante" pero opaco.
+4. **Nunca commitear secretos** — API tokens, passwords, `.env` reales van siempre ignorados por Git (solo versionar `.env.example`).
+5. **Priorizar explicabilidad sobre brevedad** — preferir código explícito, tipado y autodocumentado.
+
 
