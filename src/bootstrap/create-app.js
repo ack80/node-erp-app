@@ -1,31 +1,32 @@
 // src/bootstrap/create-app.js
-import { requestLogger } from '../infrastructure/http/middlewares/logger.middleware.js';
-import { errorHandler } from '../infrastructure/http/middlewares/error.middleware.js';
-import { registerRoutes } from '../infrastructure/http/router.js';
-import { createContainer } from './container.js';
+    import { createRouter } from '../infrastructure/http/router.js';
+    import { registerRoutes } from './register-routes.js';
 
-export function createApp() {
-    // 1. Inicializamos el contenedor de dependencias de nuestro ERP
-    const container = createContainer();
+    /**
+     * Ensambla la aplicación HTTP del ERP.
+     * Registra rutas y retorna el manejador de peticiones.
+     *
+     * @param {object} container - Contenedor de dependencias (opcional)
+     * @returns {Function} Request handler para el servidor HTTP de Node.js
+     */
+    export function createApp(container = {}) {
+      // 1. Inicializamos el router artesanal
+      const router = createRouter();
 
-    // 2. Creamos el manejador de peticiones (el "serrucho" principal)
-    const appHandler = async (req, res) => {
+      // 2. Registramos las rutas del sistema
+      registerRoutes(router);
+
+      // 3. Retornamos el manejador de peticiones HTTP
+      const appHandler = async (req, res) => {
         try {
-            // --- PIPELINE DE FILTROS (Estilo Gateway Interno) ---
-            await requestLogger(req, res);
-
-            // Aquí puedes meter más filtros globales:
-            // await authMiddleware(req, res);
-            // await corsMiddleware(req, res);
-
-            // --- DESPACHADOR HACIA LAS FEATURES ---
-            await registerRoutes(req, res, container);
-
+          await router.handle(req, res, container);
         } catch (error) {
-            // --- MANEJO GLOBAL DE ERRORES ---
-            await errorHandler(error, req, res);
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Internal Server Error', message: error.message }));
         }
-    };
+      };
 
-    return appHandler;
-}
+      return appHandler;
+    }
+
