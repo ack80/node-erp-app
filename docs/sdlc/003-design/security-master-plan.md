@@ -174,3 +174,26 @@ El Rate Limiter frena ataques de denegación de servicio y ataques de diccionari
  │        {"error":"RATE_LIMIT_EXCEEDED"}                 │
  └────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 6. Integración Frontend (React) y Cabeceras de Seguridad
+
+El backend está preparado nativamente para ser consumido por un cliente moderno en **React**:
+
+```text
+ ⚛️ React SPA (localhost:3000 o Vercel)
+        │
+        ├── 1. Preflight automático del navegador: OPTIONS /api/*
+        │      └─► corsMiddleware responde 204 No Content
+        │
+        └── 2. Petición autenticada: POST /api/users
+               └─► corsMiddleware valida Origin y expone headers
+```
+
+### Cabeceras Inyectadas en cada Respuesta:
+1. **`Access-Control-Allow-Origin`:** Configurable por variable de entorno (`CORS_ORIGIN`) para admitir la URL del frontend de React.
+2. **`Access-Control-Allow-Headers`:** Permite `Content-Type` y `Authorization` para el envío de JWT.
+3. **`X-Content-Type-Options: nosniff`:** Previene ataques basados en interpretación errónea de tipos MIME.
+4. **`X-Frame-Options: DENY`:** Blindaje contra Clickjacking imposibilitando incrustar el ERP en iframes externos.
+5. **`Referrer-Policy: strict-origin-when-cross-origin`:** Protege las rutas internas de filtrarse en cabeceras de referencia.
