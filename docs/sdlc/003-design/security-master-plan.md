@@ -112,3 +112,65 @@ En sistemas empresariales de misión crítica, la seguridad **no es una fase tar
 2. **Deterministic Error Handling:** Los errores 500 no filtran detalles internos (`errorHandler`).
 3. **No Hardcoded Secrets:** Cero secretos en Git; validación fail-fast en el arranque (`env.js`).
 4. **Reproducible Security Audit:** Suite de seguridad ejecutable con un solo comando.
+
+---
+
+## 5. Control de Acceso y Rate Limiting (Protección contra Evasión y Fuerza Bruta)
+
+### A. Evasión de Login (Direct Endpoint Access Attack)
+Un atacante puede intentar invocar endpoints protegidos directamente (ej. `POST /api/orders` o `GET /api/customers`) mediante `curl` o herramientas automatizadas sin pasar por la interfaz de usuario.
+
+```text
+ Invocación no autenticada: POST /api/orders
+                      │
+                      ▼
+ ┌────────────────────────────────────────────────────────┐
+ │ 🛡️ authMiddleware (src/infrastructure/http/)          │
+ │                                                        │
+ │ 1. Verifica header: 'Authorization: Bearer <token>'    │
+ │    ├── [ NO PRESENTE / MAL FORMADO ]                   │
+ │    │     └─► 🛑 401 Unauthorized                       │
+ │    │         {"error":"UNAUTHORIZED",                  │
+ │    │          "message":"Token no proporcionado"}      │
+ │    │         (El flujo se aborta de inmediato)         │
+ │    │                                                   │
+ │    └── [ PRESENTE ]                                    │
+ │          └─► 2. Criptografía: tokenService.verify()   │
+ │                ├── [ FIRMA INVÁLIDA / EXPIRADO ]       │
+ │                │     └─► 🛑 403 Forbidden              │
+ │                └── [ VÁLIDO ]                          │
+ │                      └─► req.user = payloadDecodificado│
+ │                          (Continúa hacia el Use Case)  │
+ └────────────────────────────────────────────────────────┘
+```
+
+**Garantía de Seguridad:**
+Ningún caso de uso privado llega a ejecutarse ni a consultar la base de datos si la petición no incluye una firma criptográfica JWT legítima emitida por el ERP.
+
+---
+
+### B. Arquitectura de Rate Limiting (Protección contra DoS y Fuerza Bruta)
+El Rate Limiter frena ataques de denegación de servicio y ataques de diccionario sobre `/api/auth/login`.
+
+```text
+ ┌────────────────────────────────────────────────────────┐
+ │ ⏱️ rate-limit.middleware.js                             │
+ │                                                        │
+ │ 1. Extracción de Identidad de Red:                     │
+ │    const clientIp = req.socket.remoteAddress;         │
+ │                                                        │
+ │ 2. Algoritmo de Ventana Deslizante (Sliding Window):   │
+ │    • Entorno Local/Dev: Cache en memoria (Map nativo)  │
+ │    • Producción: Instancia Redis gestionada en Aiven   │
+ │      (infra/terraform/modules/redis/)                  │
+ │                                                        │
+ │ 3. Umbrales de Seguridad:                              │
+ │    • Global API: Máximo 100 req/min por IP             │
+ │    • Login Endpoint: Máximo 5 intentos fallidos / min  │
+ │                                                        │
+ │ 4. Acción ante Infracción:                             │
+ │    └─► 🛑 HTTP 429 Too Many Requests                   │
+ │        Header: 'Retry-After: 60'                       │
+ │        {"error":"RATE_LIMIT_EXCEEDED"}                 │
+ └────────────────────────────────────────────────────────┘
+```
