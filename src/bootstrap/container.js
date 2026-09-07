@@ -1,15 +1,20 @@
-// src/bootstrap/container.js
-import { prisma } from '../infrastructure/database/prisma-client.js';
-import { makeUserModule } from './modules/user.container.js';
-import { makeCustomerModule } from './modules/customer.container.js';
 
-export function createContainer() {
-    // Instanciamos los módulos de nuestro ERP
-    const users = makeUserModule(prisma);
-    const customers = makeCustomerModule(prisma);
+    // src/bootstrap/container.js
+    import { pool } from '../infrastructure/database/pool.js';
 
-    return {
-        users,
-        customers
-    };
-}
+    /**
+     * Contenedor de Inyección de Dependencias manual.
+     * Centraliza la creación y cableado de dependencias del ERP.
+     *
+     * @param {object} overrides - Permite sustituir dependencias en tests (ej. { db: mockPool })
+     * @returns {object} Contenedor con los servicios y adaptadores del sistema
+     */
+    export function createContainer(overrides = {}) {
+      const db = overrides.db || pool;
+
+      return {
+        db,
+        // Aquí iremos inyectando users, auth, customers conforme los construyamos:
+        // users: makeUserModule(db),
+      };
+    }
