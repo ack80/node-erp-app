@@ -1,6 +1,7 @@
 // src/bootstrap/create-app.js
     import { createRouter } from '../infrastructure/http/router.js';
     import { registerRoutes } from './register-routes.js';
+    import { errorHandler } from '../infrastructure/http/middlewares/error.middleware.js';
 
     /**
      * Ensambla la aplicación HTTP del ERP.
@@ -21,12 +22,10 @@
         try {
           await router.handle(req, res, container);
         } catch (error) {
-          res.statusCode = 500;
-          res.setHeader('Content-Type', 'application/json');
-          res.end(JSON.stringify({ error: 'Internal Server Error', message: error.message }));
+          // Delegamos el manejo del error a nuestro middleware especializado
+          errorHandler(error, req, res);
         }
       };
 
       return appHandler;
     }
-
