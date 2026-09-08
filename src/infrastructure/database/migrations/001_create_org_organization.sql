@@ -103,7 +103,3 @@
       INDEX idx_org_stores_company (company_id),
       INDEX idx_org_stores_branch (branch_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-  ──────
-  ### Archivo 2: 002_create_usr_users.sql
-
-   

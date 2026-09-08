@@ -1,9 +1,10 @@
+
 // src/infrastructure/database/pool.js
 import mysql from 'mysql2/promise';
 import { env } from '../../config/env.js';
 
 /**
- * Pool de conexiones nativo a MySQL (sin ORM)
+ * Pool de conexiones nativo a MySQL / MariaDB (sin ORM)
  */
 export const pool = mysql.createPool({
   host: env.db.host,
@@ -16,4 +17,5 @@ export const pool = mysql.createPool({
   queueLimit: 0,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
+  multipleStatements: true, // <--- Permite ejecutar scripts con múltiples CREATE TABLE
 });

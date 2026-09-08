@@ -1,4 +1,42 @@
-# version: "3.9"
-# services:
-#   app:
-#     build: ../..
+version: "3.8"
+
+services:
+  mariadb:
+    image: mariadb:10.11
+    container_name: erp-mariadb-master-dev
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: erp_master_dev
+      MYSQL_USER: erp_user
+      MYSQL_PASSWORD: 123
+    ports:
+      - "3306:3306"
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mariadb_master_dev_data:/var/lib/mysql
+    networks:
+      - erp_network
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: erp-cloudbeaver-dev
+    restart: always
+    ports:
+      - "8978:8978"
+    volumes:
+      - cloudbeaver_dev_data:/opt/cloudbeaver/workspace
+    depends_on:
+      - mariadb
+    networks:
+      - erp_network
+
+volumes:
+  mariadb_master_dev_data:
+  cloudbeaver_dev_data:
+
+networks:
+  erp_network:
+    driver: bridge
