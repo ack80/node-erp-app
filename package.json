@@ -8,14 +8,21 @@
     "test": "test"
   },
   "scripts": {
-    "start": "node --env-file=.env.pro src/main.js",
+    "start": "node src/main.js",
+    "start:pro": "node --env-file=.env.pro src/main.js",
     "dev": "node --env-file=.env.dev --watch src/main.js",
+    "db:migrate": "node scripts/migrate.js",
+    "db:migrate:dev": "node --env-file=.env.dev scripts/migrate.js",
+    "db:migrate:pro": "node --env-file=.env.pro scripts/migrate.js",
+    "db:seed": "node scripts/seed.js",
+    "db:seed:dev": "node --env-file=.env.dev scripts/seed.js",
+    "db:seed:pro": "node --env-file=.env.pro scripts/seed.js",
+    "db:fixture:dev": "node --env-file=.env.dev scripts/fixture.js",
     "test:watch": "vitest",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:load": "k6 run test/load/smoke-test.js",
-    "test:load:stress": "k6 run test/load/stress-test.js",
-    "db:migrate": "node --env-file=.env.dev scripts/migrate.js"
+    "test:load:stress": "k6 run test/load/stress-test.js"
   },
   "keywords": [],
   "type": "module",
