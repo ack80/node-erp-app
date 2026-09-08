@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node src/main.js",
+    "db:reset:dev": "node --env-file=.env.dev scripts/reset.js",
     "start:pro": "node --env-file=.env.pro src/main.js",
     "dev": "node --env-file=.env.dev --watch src/main.js",
     "db:migrate": "node scripts/migrate.js",
