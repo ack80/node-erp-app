@@ -1,9 +1,18 @@
 -- =============================================================================
--- Migración: 001_create_org_organization.sql
--- Dominio: organization/ (Prefijo org_)
--- Descripción: Geografía, Monedas, Holding, Empresas Fiscales, Sucursales y Tiendas
--- Estándar: 3FN, ISO 3166-1 (Países), ISO 4217 (Monedas), Facturación SRI Ecuador
--- Cumplimiento: Replicación MySQL / MariaDB (InnoDB, utf8mb4)
+-- 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 001 (Edgar F. Codd 3NF) & Era 002 (SAP Mandante Multi-Tenant)
+-- 📐 PATRONES DE DISEÑO FORMALES:
+--    1. Shared Database, Shared Schema Multi-Tenancy (SAP Client Pattern vía holding_id)
+--    2. Composite B-Tree Covering Index Pattern (Búsquedas O(log N) en índices compuestos)
+--    3. Hybrid Schema Pattern (Relacional 3NF para datos nucleares + JSON metadata para extensiones)
+--    4. Soft Delete / Forensic Integrity Pattern (FOREIGN KEY ON DELETE RESTRICT)
+-- ⚙️ ESTRUCTURAS DE DATOS Y COMPLEJIDAD:
+--    • B+Tree Clustered Index (InnoDB): O(log N) búsqueda y traversal secuencial de rangos.
+--    • Adjacency List: Jerarquía relacional Holding -> Company -> Branch -> Store.
+-- 🦹 VILLANOS NEUTRALIZADOS:
+--    • Tenant Data Leakage: Toda tabla operativa tiene clave de aislamiento foránea.
+--    • Full Table Scan (Index Starvation): Toda clave foránea posee índice B-Tree dedicado.
+--    • EAV Anti-Pattern / Sparse Column Explosion: Metadata flexible en columna JSON sin tablas EAV.
+--    • Cascading Deletion Holocaust: ON DELETE RESTRICT previene borrado accidental de empresas.
 -- =============================================================================
 
 -- -----------------------------------------------------------------------------

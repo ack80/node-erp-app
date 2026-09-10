@@ -1,9 +1,17 @@
- -- =============================================================================
-    -- Migración: 002_create_usr_users.sql
-    -- Dominio: users/ (Prefijo usr_)
-    -- Descripción: Gestión de Personas, Usuarios del Sistema, Roles y Permisos (RBAC)
-    -- Precedencia: Depende estrictamente de org_holdings, org_companies, org_branches
-    -- =============================================================================
+-- =============================================================================
+-- 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 001 (Integridad Referencial ACID) & Era 002 (SAP Mandante) & Era 004 (Django Auth Schema)
+-- 📐 PATRONES DE DISEÑO FORMALES:
+--    1. Junction Table Pattern / Association Table (usr_user_roles para N:M desacoplado)
+--    2. Composite Unique Key Pattern ((holding_id, email) para unicidad contextual)
+--    3. State Integrity Pattern (is_active TINYINT(1) para Soft Delete)
+-- ⚙️ ESTRUCTURAS DE DATOS Y COMPLEJIDAD:
+--    • B+Tree Index Compuesto: O(log N) para resolución de logins por email y holding.
+--    • Clustered Primary Keys (INT AUTO_INCREMENT): Espacio O(1) adicional sin fragmentación de páginas de disco.
+-- 🦹 VILLANOS NEUTRALIZADOS:
+--    • Global Email Collisions: Permite que 'admin@empresa.com' exista independientemente en holdings distintos.
+--    • Hard-Coded Role Enumerations: usr_roles desacoplado en tabla física sin `ENUM` rígidos que bloquean DDL.
+--    • Ghost Orphan Users: Relaciones foráneas estrictas con RESTRICT protegiendo trazabilidad histórica.
+-- =============================================================================
     
     -- -----------------------------------------------------------------------------
     -- 1. TABLA: usr_roles
