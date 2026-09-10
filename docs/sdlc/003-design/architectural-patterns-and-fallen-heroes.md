@@ -27,6 +27,10 @@ Sin embargo, su código genético sigue vivo. En este ERP Zero-Frameworks en Nod
  │ ⚡ DELPHI (1995)       ──► Arquitectura ERP Cliente/Servidor y el ADN de TypeScript     │
  │ 🐪 PERL (1987)         ──► Expresiones Regulares Universales (PCRE) y Gestores de Pkg   │
  │ 📜 LISP (1958)         ──► Funciones de Orden Superior, Closures y Garbage Collection   │
+ │ 📦 POWERBUILDER (1991) ──► El Legendario DataWindow y la Era Dorada del RAD Corporativo │
+ │ 📁 DBASE (1979)        ──► La Democratización de los Datos y el Estándar Universal .DBF │
+ │ 🦊 FOXPRO (1989)       ──► El Demonio de la Velocidad Relacional y la Optimización Rush │
+ │ 🪟 VISUAL BASIC (1991) ──► La Programación Guiada por Eventos y la Conexión Rápida RAD  │
  └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -106,6 +110,49 @@ Sin embargo, su código genético sigue vivo. En este ERP Zero-Frameworks en Nod
 
 ---
 
+### 2.7. dBASE (Wayne Ratliff / Ashton-Tate, 1979): El Patriarca que Democratizó los Datos en el PC
+- **Historia:**
+  Desarrollado originalmente por Wayne Ratliff para el Jet Propulsion Laboratory (JPL) de la NASA bajo el nombre *Vulcan*, y comercializado por Ashton-Tate a partir de 1980. En la era de MS-DOS y el IBM PC, **dBASE dominó más del 70% del mercado mundial de bases de datos para computadoras personales**.
+- **Las Batallas que Ganó:**
+  1. **El Formato `.DBF` (El Estándar Inmortal de Intercambio):**
+     dBASE creó la estructura `.dbf` con diccionario de metadatos embebido en la cabecera. Fue tan exitoso que todavía hoy los sistemas de información geográfica (GIS / Shapefiles de ESRI) y el software aduanero y contable en todo el mundo siguen intercambiando tablas en `.dbf`.
+  2. **El Lenguaje xBase:**
+     Fue el primer lenguaje que combinó comandos interactivos de consulta (`USE`, `APPEND`, `BROWSE`, `REPLACE`) con un lenguaje procedural completo, permitiendo que pequeños contadores y PYMEs construyeran sus propios sistemas de inventario sin depender de mainframes millonarios.
+- **Su Legado en nuestro ERP:**
+  - La democratización del acceso a los datos y la simplicidad de manipular tablas directas. En nuestro proyecto emulamos esa inmediatez operativa al interactuar directamente con MariaDB vía `mysql2`, sin capas opacas de abstracción.
+
+---
+
+### 2.8. FoxPro / Visual FoxPro (Fox Software / Microsoft, 1989): El Demonio Implacable de la Velocidad
+- **Historia:**
+  Nacido de Fox Software en 1989 y adquirido por Microsoft en 1992 por 173 millones de dólares. Mientras dBASE se ahogaba en litigios y bugs, FoxPro se convirtió en la leyenda indiscutible del rendimiento en la microcomputación.
+- **Las Batallas que Ganó:**
+  1. **La Tecnología Rushmore (El Milagro de Indexación):**
+     La optimización *Rushmore* utilizaba mapas de bits indexados para resolver consultas complejas sobre cientos de miles de registros en microsegundos, **superando a menudo en velocidad pura de lectura a monstruos como Oracle o SQL Server en redes LAN**.
+  2. **La Dualidad Perfecta entre Datos Locales y SQL Remoto:**
+     Visual FoxPro permitía mezclar cursores locales en memoria (`CREATE CURSOR`) con consultas a bases de datos relacionales cliente/servidor vía ODBC con una naturalidad que ningún framework moderno ha podido igualar.
+  3. **El Caballo de Batalla de Latinoamérica:**
+     Prácticamente toda farmacia, ferretería, fábrica y distribuidora de Ecuador, Colombia, Perú, Venezuela, México y Argentina operó su facturación, kardex e inventarios sobre Visual FoxPro durante más de dos décadas.
+- **Su Legado en nuestro ERP:**
+  - La obsesión por la **velocidad de indexación y el uso óptimo de índices B-Tree**: en `001_create_org_organization.up.sql` y `002_create_usr_users.up.sql`, cada clave foránea y campo de búsqueda (`tax_id`, `email`, `holding_id`) está estrictamente indexado para garantizar resoluciones sub-milisegundo.
+
+---
+
+### 2.9. Visual Basic (Microsoft / Alan Cooper, 1991): La Revolución de la Programación Guiada por Eventos
+- **Historia:**
+  Concebido originalmente por el legendario pionero del diseño de interacción **Alan Cooper** como un prototipo llamado *Ruby* (sin relación con el lenguaje de Mats), y transformado por Microsoft en **Visual Basic 1.0** en 1991. En su versión cúspide (**VB6**, 1998), fue el lenguaje más utilizado del planeta Tierra, con millones de desarrolladores creando software comercial de escritorio en tiempo récord.
+- **Las Batallas que Ganó:**
+  1. **La Programación Guiada por Eventos (Event-Driven Programming):**
+     Antes de VB, para crear una ventana en Windows tenías que escribir 400 líneas de C con el API de Win32, manejando el bucle de mensajes `GetMessage()` / `DispatchMessage()` a mano. Visual Basic inventó el lienzo visual: dibujabas un botón, hacías doble clic y escribías `Sub Command1_Click()`.
+  2. **Componentes Reutilizables (VBX y ActiveX):**
+     Creó el primer mercado global multimillonario de componentes gráficos de terceros (calendarios, dashboards, visores de reportes) que sentó las bases del ecosistema de componentes de la web moderna.
+  3. **Conexión Rápida a Datos (DAO / ADO / ODBC):**
+     Cualquier programador junior podía conectar una base de datos a un formulario en 5 minutos y tener un punto de venta facturando al final del día.
+- **Su Legado en nuestro ERP:**
+  - La arquitectura de **Eventos** (`EventEmitter` / `node:events`) y la filosofía de que el software debe construirse para resolver problemas de negocio de forma rápida, pragmática y comprensible sin perderse en dogmatismos academicistas.
+
+---
+
 ## 3. El Panteón Universal Completo del Software Empresarial
 
 Con la incorporación del Cenotafio de los Héroes Caídos, el repositorio `node-erp-app` posee la genealogía arquitectónica más completa y documentada que se haya ensamblado:
@@ -121,6 +168,9 @@ Con la incorporación del Cenotafio de los Héroes Caídos, el repositorio `node
  │ • Perl:          Expresiones Regulares (PCRE), Ecosistemas de paquetes (npm).          │
  │ • Lisp:          Funciones de orden superior, Closures, Garbage Collection.            │
  │ • PowerBuilder:  El DataWindow (Data+Validación+UI en un objeto), RAD Empresarial.    │
+ │ • dBASE:         La democratización de los datos en el PC y el formato estándar .DBF.  │
+ │ • FoxPro / VFP:  El demonio de la velocidad con Rushmore y el motor de ERPs de LatAm. │
+ │ • Visual Basic:  La programación guiada por eventos (Event-Driven) y el lienzo RAD.    │
  ├────────────────────────────────────────────────────────────────────────────────────────┤
  │ ⚔️ LOS VETERANOS HEROICOS (Estructura y Longevidad):                                   │
  │ • Ruby on Rails: Convención sobre Configuración, Paternidad de Migraciones, TDD.       │
