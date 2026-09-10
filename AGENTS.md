@@ -173,4 +173,14 @@ El detalle de cada hito, su estado, criterios de aceptación y linaje arquitect�
    - **Patrón Formal:** Nombre canónico del patrón (GoF, PoEAA o DDD) implementado.
    - **Estructura de Datos / Algoritmo:** Estructura en memoria y complejidad temporal y espacial en Big-O ($O(1)$, $O(\log n)$, $O(n)$).
    - **Anti-Patrón Erradicado (El Villano):** Cuál es el error de diseño o fallo técnico concreto que este código previene y neutraliza (el antídoto contra el villano).
+9. **Precedencia Estricta de Construcción — El Roadmap Manda** — Antes de escribir una sola línea de código o plantear cualquier disyuntiva de "¿qué construimos ahora?", el agente tiene la obligación de consultar explícitamente el documento del hito activo en:
+   👉 `docs/sdlc/004-implement/roadmap-milestones/<NNN>_milestone_<nombre>.md`
+
+   **Las reglas son inviolables:**
+   - El próximo entregable a construir es siempre el siguiente ítem numerado (`2.1`, `2.2`, `2.3`...) del hito activo.
+   - **Nunca** se salta un entregable ni se invierte el orden por conveniencia, velocidad o sugerencia espontánea.
+   - **Nunca** se plantea una disyuntiva al usuario sobre qué construir a continuación — la respuesta siempre está en el roadmap. Si hay duda, leer el documento antes de preguntar.
+   - Al completar todos los entregables de un hito: actualizar su estado a `✅ COMPLETADO` y avanzar al siguiente hito numerado.
+   - **La única razón válida para desviarse del roadmap** es una instrucción explícita y directa del usuario que contradiga el orden — nunca una suposición o iniciativa propia del agente.
+
 
