@@ -1,12 +1,12 @@
-# Hito 002: Infraestructura Transversal de Resiliencia ("Las Medias")
+# Hito 002: Infraestructura Transversal de Resiliencia y Observabilidad
 
 | Metadato | Valor |
 |---|---|
 | **Hito** | 002 |
-| **Clasificación** | 🧦 Medias (Capa 2: Herramientas Transversales para Features) |
+| **Clasificación** | Infraestructura Transversal (Capa 2: Resiliencia y Contratos para Features) |
 | **Precedencia Requerida** | Hito 001 completado |
 | **Estado** | ⏳ **SIGUIENTE EN COLA DE IMPLEMENTACIÓN** |
-| **Linaje de Referencia** | Era 001 (Mainframe ACID), Era 002 (SAP LUW), Era 005 (Laravel / ASP.NET) |
+| **Linaje de Referencia** | Era 001 (Mainframe ACID), Era 002 (SAP LUW), Era 005 (Laravel / ASP.NET Core) |
 
 ---
 

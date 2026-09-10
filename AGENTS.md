@@ -122,4 +122,5 @@ infra/
 5. **No mezclar entornos de Terraform** — cualquier cambio de infra debe declarar explícitamente si es para `development` o `production`, nunca aplicar sin especificar.
 6. **Nunca commitear secretos** — API tokens, passwords, `.tfvars` reales van siempre ignorados por Git.
 7. **Priorizar explicabilidad sobre brevedad** — dado que el objetivo es aprender, preferir código explícito y comentado sobre código "elegante" pero opaco.
+8. **Trazabilidad de Inspiración Arquitectónica Obligatoria** — Todo nuevo archivo de código, clase, helper o migración debe declarar en su cabecera JSDoc o comentario SQL explícitamente a qué **Era y Tecnología de Inspiración** corresponde según la matriz de linaje (`docs/sdlc/003-design/architectural-lineage/`), por ejemplo: `Inspiración: Era 002 (SAP ABAP - LUW / Mandante)` o `Inspiración: Era 005 (Laravel withTransaction)`.
 
