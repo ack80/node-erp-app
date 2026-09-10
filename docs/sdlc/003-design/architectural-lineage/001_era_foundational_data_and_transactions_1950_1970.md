@@ -34,7 +34,19 @@ Entre 1950 y 1970 nació el procesamiento electrónico de datos empresariales. L
   - **Aislamiento:** Las transacciones simultáneas no leen estados intermedios corruptos.
   - **Durabilidad:** Una vez confirmado (*COMMIT*), el dato sobrevive a fallos del sistema operativo.
 
-### 2.3. Prolog (Colmerauer y Kowalski, 1972): Programación Lógica Declarativa
+### 2.3. Edgar F. Codd (IBM, 1970) y Donald D. Chamberlin (1974): El Modelo Relacional y SQL
+- **Mecanismo Técnico:**
+  En su histórico paper *"A Relational Model of Data for Large Shared Data Banks"*, Codd demostró que los datos debían representarse matemáticamente en **relaciones (tablas) compuestas por tuplas (filas) y atributos (columnas)**, gobernadas por el álgebra relacional y las **Formas Normales (1NF, 2NF, 3NF)**.
+  Chamberlin y Boyce crearon **SEQUEL (hoy SQL)** para permitir consultar datos de forma declarativa sin conocer la ubicación física de los sectores del disco duro.
+- **Regla Fundamental:** La estructura de los datos es independiente de cómo el motor los almacena en disco.
+
+### 2.4. C y Unix (Dennis Ritchie y Ken Thompson, Bell Labs, 1969 - 1972)
+- **Mecanismo Técnico:**
+  Crearon la base del cómputo moderno:
+  1. **Tipos Primitivos y Control de Memoria en C:** El sustrato donde hoy corren los motores de bases de datos (MariaDB, PostgreSQL) y el motor V8 de Node.js.
+  2. **La Filosofía de Unix ("Todo es un flujo de bytes / stream"):** Los sockets TCP de red, los archivos y los procesos comparten la misma interfaz abstracta de lectura y escritura (*POSIX streams*).
+
+### 2.5. Prolog (Colmerauer y Kowalski, 1972): Programación Lógica Declarativa
 - **Mecanismo Técnico:**
   Sustituyó los algoritmos imperativos por un motor de inferencia basado en cálculo de predicados de primer orden: el programador define *Hechos* y *Reglas*, y el sistema deduce lógicamente si una operación es válida.
 
@@ -45,6 +57,8 @@ Entre 1950 y 1970 nació el procesamiento electrónico de datos empresariales. L
 ```text
  COBOL PIC 9V99 ──────────► SQL-92 DECIMAL / NUMERIC ────► Tipos Monetarios Nativos en Bases de Datos
  IBM System/360 CICS ─────► Monitores TP (Tuxedo) ────────► Motores Relacionales con WAL (InnoDB, Postgres)
+ Edgar F. Codd (3NF) ─────► SQL ANSI Estándar ────────────► Esquemas Normalizados (org_countries, org_cities)
+ C / Unix POSIX Streams ──► Sockets TCP / libuv ──────────► Node.js Streams y Prepared Statements en mysql2
  Prolog Reglas Lógicas ───► Motores de Reglas (Drools) ───► Validadores Declarativos (Zod, JSON Schema)
 ```
 
@@ -52,9 +66,11 @@ Entre 1950 y 1970 nació el procesamiento electrónico de datos empresariales. L
 
 ## 4. Implementación Rigurosa en `node-erp-app`
 
-1. **Prohibición Total de Tipos Flotantes en Tablas de Dinero:**
+1. **Prohibición Total de Tipos Flotantes en Tablas de Dinero (Herencia de COBOL):**
    - En las migraciones de MariaDB (`001_create_org_organization.up.sql`, y las futuras `ord_` y `bil_`), todo monto de precio, costo, subtotal, impuesto o comisión se declara exclusivamente como **`DECIMAL(12, 4)`** (o `DECIMAL(10, 2)` para montos finales), **NUNCA como `FLOAT` ni `DOUBLE`**.
-2. **Cálculos en Memoria Libres de Coma Flotante:**
-   - En JavaScript, evitamos operaciones directas como `0.1 + 0.2`. Los cálculos de facturación operan sobre números enteros escalados (centavos) o utilizando precisión arbitraria.
-3. **Persistencia ACID Obligatoria:**
-   - Todas las escrituras que involucran más de un paso (como registrar una empresa con sus sucursales, o un usuario con sus roles asignados) se envuelven obligatoriamente en transacciones de InnoDB con auto-rollback en caso de error.
+2. **Normalización 3NF Estricta (Herencia de Edgar F. Codd):**
+   - La base de datos rechaza la desnormalización perezosa ("sacos de gatos"): países (`org_countries`), monedas (`org_currencies`), ciudades (`org_cities`), sucursales atómicas (`org_branches`) y filiales (`org_companies`) están vinculadas con integridad referencial explícita (`FOREIGN KEY ON DELETE RESTRICT`).
+3. **Persistencia ACID Obligatoria (Herencia de IBM CICS):**
+   - Todas las escrituras compuestas se envuelven obligatoriamente en transacciones de InnoDB con auto-rollback en caso de error.
+4. **I/O Basada en Streams TCP Nativos (Herencia de Unix y C):**
+   - En `src/infrastructure/http/request-body.js`, procesamos las peticiones directamente como streams binarios de bajo nivel de Node.js sin sobrecargar la memoria.

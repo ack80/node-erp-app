@@ -33,6 +33,8 @@ Este compendio documenta **7 Eras Tecnológicas Formales**, analizando qué prob
  │           • IBM Mainframes (System/360, CICS) ──► Garantías ACID, persistencia confiable        │
  │           • COBOL (1959)                      ──► Aritmética decimal exacta (cero IEEE 754)      │
  │           • Fortran (1957)                    ──► Tipado primitivo y eficiencia computacional   │
+ │           • Edgar F. Codd (1970) / SQL (1974) ──► El Modelo Relacional y Formas Normales (3NF)  │
+ │           • C / Unix (1969 - 1972)            ──► Sockets TCP, Streams POSIX y motor V8/MariaDB │
  │           • Prolog (1972)                     ──► Deducción lógica declarativa                  │
  ├──────────────────────────────────────────────────────────────────────────────────────────────────┤
  │ ERA 002 (1970 - 1995) Paradigmas de Objetos, ERPs Corporativos y RAD de Escritorio               │
@@ -46,6 +48,7 @@ Este compendio documenta **7 Eras Tecnológicas Formales**, analizando qué prob
  ├──────────────────────────────────────────────────────────────────────────────────────────────────┤
  │ ERA 003 (1995 - 2005) Desacoplamiento Empresarial, Puertos y Resiliencia Bancaria              │
  │           • Java J2EE / Spring Framework      ──► Puertos y Adaptadores (Arquitectura Hexagonal) │
+ │           • Eric Evans & Martin Fowler (2003) ──► Domain-Driven Design (DDD: Entidad, Repo, VO)  │
  │           • Spring Cloud / Netflix Hystrix    ──► Circuit Breaker ante fallos de APIs externas   │
  │           • Spring Data Envers                ──► Auditoría inmutable (Append-Only)              │
  ├──────────────────────────────────────────────────────────────────────────────────────────────────┤
