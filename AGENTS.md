@@ -88,11 +88,28 @@ infra/
 
 ## Convenciones de nombres y estructura
 
-- `scripts/` (raíz) → solo scripts que operan sobre la **aplicación** (seed, migraciones, build).
+- `scripts/` (raíz) → solo scripts que operan sobre la **aplicación** (seed, migraciones, build, rollback).
 - `infra/scripts/` (si se crea) → solo scripts que operan sobre la **infraestructura** (Terraform, Ansible).
 - Carpetas vacías intencionales llevan `.gitkeep`.
 - Nombres de archivo sin typos — si detectas un typo en un nombre existente (ej. archivos mal escritos), repórtalo antes de replicarlo en código nuevo.
 - `docs/sdlc/` documenta el ciclo de vida completo por fases (001-planning → 007-operation) — cualquier decisión de diseño relevante se documenta ahí, no solo en commits.
+- `docs/sdlc/003-design/architectural-lineage/` contiene la **matriz maestra de precedencia histórica (7 Eras)** que fundamenta cada decisión arquitectónica de este backend.
+
+---
+
+## Reglas Obligatorias de Base de Datos y Persistencia
+
+1. **Migraciones Bidireccionales (UP / DOWN) por Lotes:**
+   - Toda migración en `src/infrastructure/database/migrations/` requiere obligatoriamente su archivo `.up.sql` y su contraparte `.down.sql` (respetando orden inverso de claves foráneas).
+   - El ejecutor (`scripts/migrate.js`) asigna lotes (`batch`). Toda reversión debe ser quirúrgica con `pnpm db:rollback:dev`, **NUNCA borrando tablas ajenas ni haciendo DROPs indiscriminados**.
+2. **Semillas Modulares por Entidad (Principio de Responsabilidad Única):**
+   - En `src/infrastructure/database/seeds/`, está prohibido crear archivos monolíticos ("sacos de gatos"). Cada entidad posee su propio seeder numerado (`001_org_countries.sql`, `002_org_currencies.sql`, etc.).
+   - Todo seed debe ser estrictamente **idempotente** utilizando `ON DUPLICATE KEY UPDATE` o `INSERT IGNORE`.
+3. **El Mandamiento Monetario (Precisión Decimal Exacta):**
+   - En cualquier tabla de compras, ventas, facturación, impuestos o comisiones, está **terminantemente prohibido usar `FLOAT` o `DOUBLE`**.
+   - Los montos financieros se declaran exclusivamente como **`DECIMAL(12, 4)`** o **`DECIMAL(10, 2)`** para prevenir errores de redondeo de coma flotante binaria IEEE 754.
+4. **Garantías Transaccionales ACID:**
+   - Operaciones de escritura compuestas (que afecten más de una tabla o fila vinculada) deben ejecutarse dentro de transacciones de InnoDB con auto-rollback.
 
 ---
 
@@ -100,7 +117,9 @@ infra/
 
 1. **No sugerir frameworks** (Express, NestJS, Prisma, TypeORM, etc.) como solución por defecto — el punto del proyecto es evitarlos. Si un framework parece "la solución obvia", es señal de que hay que implementar esa pieza a mano y documentar el porqué.
 2. **Respetar la cohesión por feature** — nuevo código de un feature (incluidos sus tests unitarios) va dentro de `features/<feature>/`, no en carpetas centralizadas.
-3. **No mezclar entornos de Terraform** — cualquier cambio de infra debe declarar explícitamente si es para `development` o `production`, nunca aplicar sin especificar.
-4. **Nunca commitear secretos** — API tokens, passwords, `.tfvars` reales van siempre ignorados por Git.
-5. **Priorizar explicabilidad sobre brevedad** — dado que el objetivo es aprender, preferir código explícito y comentado sobre código "elegante" pero opaco.
+3. **Seguir el linaje de las 7 Eras** (`docs/sdlc/003-design/architectural-lineage/`) para cualquier abstracción nueva (Ports & Adapters, ABAC, RFC 7807, etc.).
+4. **Respuestas de error normadas** — Todo error HTTP 4xx/5xx debe emitirse conforme a la especificación **RFC 7807 (`ProblemDetails`)** con `Content-Type: application/problem+json` y `traceId`.
+5. **No mezclar entornos de Terraform** — cualquier cambio de infra debe declarar explícitamente si es para `development` o `production`, nunca aplicar sin especificar.
+6. **Nunca commitear secretos** — API tokens, passwords, `.tfvars` reales van siempre ignorados por Git.
+7. **Priorizar explicabilidad sobre brevedad** — dado que el objetivo es aprender, preferir código explícito y comentado sobre código "elegante" pero opaco.
 
