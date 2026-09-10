@@ -1,9 +1,13 @@
 // src/features/users/users.entity.js
 
 /**
- * Entidad de Dominio: Usuario del ERP.
- * Representa la regla de negocio pura de un usuario con ámbito jerárquico.
- * Cero dependencias externas.
+ * @file src/features/users/users.entity.js
+ * 
+ * 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 002 (Smalltalk OOP Pura) & Era 003 (Eric Evans DDD Entity / Ubiquitous Language) & Era 007 (Rust Inmutable States)
+ * 📐 PATRÓN FORMAL DE DISEÑO:    Domain Entity (DDD) & Information Hiding Pattern
+ * ⚙️ ESTRUCTURA Y ALGORITMO:     Class Instance con Record Projections | Tiempo: O(1) creación y serialización | Espacio: O(1)
+ * 🦹 VILLANO / ANTI-PATRÓN:      Anemic Domain Model (objetos que son solo bolsas de getters/setters sin lógica) & Password Hash Leakage (fugar el hash de contraseña al frontend en respuestas JSON)
+ * 🛡️ EL ANTÍDOTO:                Entidad rica con métodos de proyección controlados (`toPublicJSON()`) que excluyen explícitamente el `passwordHash` de la frontera pública.
  */
 export class UserEntity {
   constructor({

@@ -3,8 +3,13 @@
 import { UserEntity } from './users.entity.js';
 
 /**
- * Fábrica del Repositorio de Usuarios conectado a la tabla usr_users.
- * 100% Prepared Statements (Seguridad OWASP contra SQL Injection).
+ * @file src/features/users/users.repository.js
+ * 
+ * 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 001 (Edgar F. Codd 3NF) & Era 003 (Eric Evans / Martin Fowler DDD Repository)
+ * 📐 PATRÓN FORMAL DE DISEÑO:    Repository Pattern (DDD) & Data Mapper Pattern (PoEAA)
+ * ⚙️ ESTRUCTURA Y ALGORITMO:     Prepared Statements / Binary Protocol MariaDB | Búsqueda por índice (holding_id, email): O(log N) con B-Tree Clustered Index
+ * 🦹 VILLANO / ANTI-PATRÓN:      SQL Injection Vulnerability (concatenación manual de strings SQL) & Leaky Database Abstraction (fugar objetos Rows crudos de la base de datos a la lógica de negocio)
+ * 🛡️ EL ANTÍDOTO:                Uso estricto de Prepared Statements parametrizados (`?`) contra inyecciones y mapeo determinista de registros a instancias de la entidad inmutable `UserEntity`.
  *
  * @param {import('mysql2/promise').Pool} db - Pool de conexiones MySQL
  */

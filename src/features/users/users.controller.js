@@ -5,7 +5,13 @@ import { sendJson } from '../../infrastructure/http/response.js';
 import { createUserSchema } from './users.schema.js';
 
 /**
- * Fábrica del controlador HTTP para el dominio de Usuarios.
+ * @file src/features/users/users.controller.js
+ * 
+ * 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 002 (Smalltalk MVC Controller) & Era 004 (Rails Skinny Controller) & Era 007 (Rust Axum Extractors)
+ * 📐 PATRÓN FORMAL DE DISEÑO:    HTTP Adapter / Controller Pattern (Clean Architecture)
+ * ⚙️ ESTRUCTURA Y ALGORITMO:     Pipeline de 3 Pasos (Extract -> Validate -> Dispatch) | Tiempo: O(1) + tiempo de ejecución del UseCase | Espacio: O(1)
+ * 🦹 VILLANO / ANTI-PATRÓN:      Overloaded HTTP Boundary (acoplar lógica de bases de datos directamente a `req` y `res`, impidiendo reutilizar la lógica en CLI, WebSockets o colas)
+ * 🛡️ EL ANTÍDOTO:                Controlador enjuto (*Skinny Controller*) que solo extrae el payload con límite anti-DoS, valida el contrato DTO con Zod y delega la ejecución al Caso de Uso.
  *
  * @param {object} dependencies
  * @param {object} dependencies.createUserUseCase

@@ -2,7 +2,13 @@
 import { Errors } from '../../shared/errors/app-error.js';
 
 /**
- * Fábrica del Caso de Uso: Registro de Usuarios.
+ * @file src/features/users/users.create.use-case.js
+ * 
+ * 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 003 (Hexagonal Architecture / Application Service) & Era 004 (Django Vertical Slices)
+ * 📐 PATRÓN FORMAL DE DISEÑO:    Command Handler / Interactor (Clean Architecture)
+ * ⚙️ ESTRUCTURA Y ALGORITMO:     Sequential Business Orchestration | Tiempo: O(log N) por búsqueda en índice | Espacio: O(1)
+ * 🦹 VILLANO / ANTI-PATRÓN:      Fat Controller God Anti-Pattern (meter lógica de negocio, hashes, queries y HTTP en el mismo método del controlador) & Plain Text Password Storage (almacenar contraseñas sin hashing)
+ * 🛡️ EL ANTÍDOTO:                Caso de Uso aislado con Inversión de Dependencias (DIP) que orquesta validación de unicidad, hash con Argon2id y persistencia sin acoplarse al protocolo HTTP.
  *
  * @param {object} dependencies
  * @param {object} dependencies.userRepository

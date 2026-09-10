@@ -1,10 +1,16 @@
 // src/infrastructure/http/router.js
-    import { sendJson } from './response.js';
-    
-    /**
-     * Fábrica del Router artesanal para Node.js nativo.
-     */
-    export function createRouter() {
+import { sendJson } from './response.js';
+
+/**
+ * @file src/infrastructure/http/router.js
+ * 
+ * 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 006 (Node.js Nativo) & Era 007 (Go HTTP Multiplexer / Explicit Routing)
+ * 📐 PATRÓN FORMAL DE DISEÑO:    Front Controller Pattern (PoEAA) & Command Dispatcher
+ * ⚙️ ESTRUCTURA Y ALGORITMO:     Hash Table (ES6 Map) | Tiempo de Búsqueda: O(1) promedio | Espacio: O(R) donde R = número de rutas
+ * 🦹 VILLANO / ANTI-PATRÓN:      Linear Scan Routing O(N) (recorrer arreglos con regex en cada petición) y Supply Chain Attack (depender de routers externos con miles de sub-dependencias en node_modules)
+ * 🛡️ EL ANTÍDOTO:                Búsqueda en tiempo constante O(1) mediante clave determinista `${METHOD} ${path}` sobre estructura hash nativa de V8 sin dependencias externas.
+ */
+export function createRouter() {
       // 1. Diccionario en memoria donde guardaremos las rutas registradas
       // Ejemplo de clave: "GET /health" o "POST /api/users"
       const routes = new Map();

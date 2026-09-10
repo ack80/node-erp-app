@@ -1,12 +1,17 @@
 
 // src/infrastructure/http/request-body.js
-    
 
-// 1  MB como limite de proteccion DoS
+// 1 MB como limite de proteccion DoS
 const MAX_BODY_SIZE = 1024 * 1024; 
 
 /**
- * Lee el ReadableStream de la petición Node.js y lo parsea a JSON.
+ * @file src/infrastructure/http/request-body.js
+ * 
+ * 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 001 (Unix POSIX Byte Streams) & Era 006 (Node.js Streams / libuv) & Era 007 (Rust Axum Extractors)
+ * 📐 PATRÓN FORMAL DE DISEÑO:    Extractor Pattern (Axum) & Stream Consumer with Backpressure
+ * ⚙️ ESTRUCTURA Y ALGORITMO:     Circular Ring Buffer / Byte Chunks de TCP | Tiempo: O(N) bytes | Espacio: O(N) acotado estrictamente a 1 MB
+ * 🦹 VILLANO / ANTI-PATRÓN:      Memory Exhaustion DoS Attack (cargar payloads infinitos en RAM de golpe hasta provocar Out of Memory OOM y tirar el proceso)
+ * 🛡️ EL ANTÍDOTO:                Lectura incremental en chunks binarios con corte inmediato de stream (`req.destroy()`) y rechazo HTTP 413 si totalBytes > 1 MB antes de parsear JSON.
  *
  * @param {import('node:http').IncomingMessage} req
  * @returns {Promise<any>} Objeto parseado o vacío si no hay body

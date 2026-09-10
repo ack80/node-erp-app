@@ -1,8 +1,15 @@
-
     // src/infrastructure/security/password-hasher.js
     import argon2 from 'argon2';
     
     /**
+     * @file src/infrastructure/security/password-hasher.js
+     * 
+     * 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 004 (Django Cryptographic Hashes) & OWASP Password Storage Standards (Argon2id)
+     * 📐 PATRÓN FORMAL DE DISEÑO:    Service Adapter Pattern / Cryptographic Strategy
+     * ⚙️ ESTRUCTURA Y ALGORITMO:     Memory-Hard Argon2id Hash Function (RFC 9106) | Tiempo: O(T * M) con T=3 iteraciones, M=64MB | Espacio: O(M) en RAM dedicada
+     * 🦹 VILLANO / ANTI-PATRÓN:      GPU / ASIC Brute-Force Acceleration (algoritmos rápidos como MD5/SHA256 que permiten crackear millones de contraseñas por segundo en tarjetas gráficas) & Timing Attacks
+     * 🛡️ EL ANTÍDOTO:                Algoritmo resistente a GPUs mediante consumo intensivo de memoria RAM (64 MB por hash) y comparación en tiempo constante.
+     *
      * Parámetros recomendados por OWASP para Argon2id:
      * - type: argon2id (híbrido contra side-channel y GPU cracking)
      * - memoryCost: 64 MB (65536 KB)

@@ -5,7 +5,13 @@ import { logger } from '../../../config/logger.js';
 import { sendJson } from '../response.js';
 
 /**
- * Middleware central de captura y respuesta de errores HTTP.
+ * @file src/infrastructure/http/middlewares/error.middleware.js
+ * 
+ * 🏛️ INSPIRACIÓN ARQUITECTÓNICA: Era 002 (Erlang "Let it Crash" / Isolation) & Era 005 (ASP.NET Core RFC 7807) & Era 006 (NestJS Exception Filters)
+ * 📐 PATRÓN FORMAL DE DISEÑO:    Exception Filter Pattern & Centralized Error Handler (Chain of Responsibility)
+ * ⚙️ ESTRUCTURA Y ALGORITMO:     Type Matching Branching / Polymorphic Error Mapping | Tiempo: O(1) | Espacio: O(1)
+ * 🦹 VILLANO / ANTI-PATRÓN:      Information Disclosure Vulnerability (fugar stack traces internos de BD o rutas de archivos al cliente en producción) & Silent Error Swallowing (capturar errores sin registrarlos en log, dejando bugs fantasma)
+ * 🛡️ EL ANTÍDOTO:                Filtro centralizado con discriminación de errores operacionales controlados (AppError / ZodError) vs no controlados (HTTP 500 con log estructurado y mensaje sanitizado al cliente).
  *
  * @param {Error} error
  * @param {import('node:http').IncomingMessage} req
