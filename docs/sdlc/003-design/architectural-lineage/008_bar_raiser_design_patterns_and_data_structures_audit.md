@@ -28,6 +28,7 @@ Este documento audita cada hito de nuestra hoja de ruta, desmontando capa por ca
  │ Patrones de Diseño Formales:                                                                           │
  │ • Front Controller (PoEAA)            ──► Enrutador centralizado que canaliza todas las peticiones.    │
  │ • Chain of Responsibility (GoF)       ──► Pipeline de middlewares procesando en cascada ordenada.      │
+ │ • Singleton Pattern (GoF / Module)    ──► Pool de base de datos único exportado como ESM Module.       │
  │ • Object Pool Pattern (GoF / Creational)► Reutilización determinista de sockets TCP a MariaDB.         │
  │ • Command Pattern (GoF)               ──► Scripts migrate.js / rollback.js ejecutando unidades UP/DOWN.│
  │                                                                                                        │
@@ -141,3 +142,11 @@ Este documento audita cada hito de nuestra hoja de ruta, desmontando capa por ca
 ### Pregunta 3: *"¿Por qué el RFC 7807 (`ProblemDetails`) es superior a devolver un JSON arbitrario como `{ error: 'Invalid data' }`?"*
 - **Respuesta de Nivel Staff:**
   > *"Porque desacopla el cliente del contrato de error mediante un estándar normado por la IETF. `ProblemDetails` (`application/problem+json`) define propiedades canónicas (`type`, `title`, `status`, `detail`, `instance`, `invalidParams`). Esto permite que API Gateways, Service Meshes y clientes frontend genéricos reconozcan la semántica de la falla sin escribir código de parseo específico para cada microservicio. Además, ligamos cada error al `traceId` distributed tracing, permitiendo correlacionar el incidente en logs estructurados con costo de búsqueda $O(1)$ en herramientas como Datadog o Elasticsearch."*
+
+### Pregunta 4: *"Para la base de datos, ¿usas el patrón Singleton o el patrón Object Pool? ¿Cuál es la diferencia exacta y cómo evitas el anti-patrón de Singleton global?"*
+- **Respuesta de Nivel Staff:**
+  > *"Utilizamos **ambos patrones en capas distintas y complementarias**:
+  > 1. **A nivel de conexión TCP individual:** Un Singleton sería desastroso. Una sola conexión física a MariaDB provocaría que peticiones concurrentes se bloqueen entre sí en fila india o que una transacción en curso (`BEGIN`) sea leída o abortada por otra petición simultánea. Por eso, a nivel de conexiones se usa un **Object Pool Pattern** (`mysql2.createPool({ connectionLimit: 10 })`), que administra una cola de $N$ sockets TCP independientes reutilizables.
+  > 2. **A nivel del gestor del Pool:** El Pool en sí mismo actúa como un **Module Singleton** en Node.js (gracias a la caché del cargador ESM de Node que evalúa `pool.js` exactamente una vez). 
+  > 3. **Eliminación del Anti-Patrón:** Para no acoplar el código al Singleton global (lo cual impediría hacer unit testing sin base de datos real), desacoplamos la instancia inyectándola a través de nuestro contenedor de dependencias (`createContainer({ db: overrides.db || pool })`). Así, en producción se comparte el Pool único, pero en pruebas unitarias podemos inyectar un **Test Double (Fake Pool con `vi.fn()` o `mysql-mock`)** en tiempo $O(1)$ sin tocar sockets de red."*
+
