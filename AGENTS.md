@@ -168,5 +168,9 @@ El detalle de cada hito, su estado, criterios de aceptación y linaje arquitect�
 5. **No mezclar entornos de Terraform** — cualquier cambio de infra debe declarar explícitamente si es para `development` o `production`, nunca aplicar sin especificar.
 6. **Nunca commitear secretos** — API tokens, passwords, `.tfvars` reales van siempre ignorados por Git.
 7. **Priorizar explicabilidad sobre brevedad** — dado que el objetivo es aprender, preferir código explícito y comentado sobre código "elegante" pero opaco.
-8. **Trazabilidad de Inspiración Arquitectónica Obligatoria** — Todo nuevo archivo de código, clase, helper o migración debe declarar en su cabecera JSDoc o comentario SQL explícitamente a qué **Era y Tecnología de Inspiración** corresponde según la matriz de linaje (`docs/sdlc/003-design/architectural-lineage/`), por ejemplo: `Inspiración: Era 002 (SAP ABAP - LUW / Mandante)` o `Inspiración: Era 005 (Laravel withTransaction)`.
+8. **Trazabilidad de Inspiración Arquitectónica y Auditoría Bar Raiser Obligatoria** — Todo nuevo archivo de código fuente, helper, clase, entidad o middleware debe declarar obligatoriamente en su cabecera JSDoc:
+   - **Inspiración:** Era histórica y tecnología de referencia según la matriz de linaje (`docs/sdlc/003-design/architectural-lineage/`).
+   - **Patrón Formal:** Nombre canónico del patrón (GoF, PoEAA o DDD) implementado.
+   - **Estructura de Datos / Algoritmo:** Estructura en memoria y complejidad temporal y espacial en Big-O ($O(1)$, $O(\log n)$, $O(n)$).
+   - **Anti-Patrón Erradicado (El Villano):** Cuál es el error de diseño o fallo técnico concreto que este código previene y neutraliza (el antídoto contra el villano).
 
