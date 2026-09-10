@@ -113,6 +113,52 @@ infra/
 
 ---
 
+## Filosofía de Construcción por Precedencia Técnica Obligatoria
+
+### El Principio Fundamental
+
+**Ningún sistema de software empresarial se construye de forma aleatoria.** Existe un orden de precedencia técnica inviolable que garantiza que cada componente de dominio de negocio que se construya tenga a su disposición, desde el primer milisegundo de su existencia, todas las herramientas de infraestructura que necesita para operar con grado empresarial.
+
+Violarlo produce el síndrome más costoso del software: **deuda técnica estructural** — código de negocio que funciona pero que carece de transacciones ACID, de trazabilidad de errores, de contratos de respuesta normados o de políticas de acceso. Arreglarlo después implica tocar y romper el 100% del código ya escrito.
+
+### La Regla de Precedencia de Dos Niveles
+
+```text
+ ┌──────────────────────────────────────────────────────────────────────────────────────┐
+ │ NIVEL 1: INFRAESTRUCTURA DE BASE                                                      │
+ │ Runtime HTTP nativo (node:http), Pool de BD, Migraciones Bidireccionales (UP/DOWN)    │
+ │ El substrato sin el cual no existe sistema.                                           │
+ ├──────────────────────────────────────────────────────────────────────────────────────┤
+ │ NIVEL 2: INFRAESTRUCTURA TRANSVERSAL DE RESILIENCIA Y OBSERVABILIDAD                  │
+ │ • Gestor Transaccional ACID declarativo (withTransaction)                             │
+ │ • Trazabilidad Distribuida (CorrelationId / traceId)                                  │
+ │ • Contratos de Error Normados (RFC 7807 / ProblemDetails)                             │
+ │ La capa que blinda cada feature de negocio antes de que exista.                      │
+ ├──────────────────────────────────────────────────────────────────────────────────────┤
+ │ NIVEL 3: FEATURES DE DOMINIO DE NEGOCIO                                               │
+ │ auth/ → users/ → organization/ → products/ → orders/ → billing/                      │
+ │ Solo se construyen sobre una base de Nivel 1 y Nivel 2 completamente operativa.      │
+ ├──────────────────────────────────────────────────────────────────────────────────────┤
+ │ NIVEL 4: AUDITORÍA GLOBAL DE CALIDAD Y SEGURIDAD                                      │
+ │ Playwright (E2E), k6 (carga / rendimiento), OWASP ZAP (DAST)                         │
+ │ Solo se ejecutan sobre sistemas de Niveles 1, 2 y 3 completamente ensamblados.       │
+ └──────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Por qué esta secuencia es infalible y reproducible
+
+1. **Cero dependencias circulares:** Cada hito solo depende de los hitos anteriores. No existe ningún paso que requiera algo que no se haya construido antes.
+2. **Cero código reescrito por deuda estructural:** Transacciones, trazabilidad y contratos de error ya existen cuando se escribe la primera línea de un feature de negocio.
+3. **Agnóstica del lenguaje o framework:** Esta secuencia aplica idénticamente en Node.js nativo, Go, Rust, Java (Spring Boot), Python (FastAPI) o C# (ASP.NET Core).
+4. **Auditable e incontestable en entrevistas de arquitectura:** Cuando un entrevistador de nivel *Bar Raiser* pregunta *"¿cómo diseñarías este sistema desde cero?"*, la respuesta canónica, ordenada e inequívoca de este proyecto es la respuesta correcta y no improvisa.
+
+### Referencia de la Hoja de Ruta por Hitos Numerados
+
+El detalle de cada hito, su estado, criterios de aceptación y linaje arquitectónico están formalizados en:
+👉 [`docs/sdlc/004-implement/roadmap-milestones/`](file:///home/rujanad/worldclass-workspace/node-erp-app/docs/sdlc/004-implement/roadmap-milestones/)
+
+---
+
 ## Cómo debe comportarse un agente en este repo
 
 1. **No sugerir frameworks** (Express, NestJS, Prisma, TypeORM, etc.) como solución por defecto — el punto del proyecto es evitarlos. Si un framework parece "la solución obvia", es señal de que hay que implementar esa pieza a mano y documentar el porqué.
