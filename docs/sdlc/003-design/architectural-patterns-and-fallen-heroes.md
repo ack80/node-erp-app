@@ -79,6 +79,33 @@ Sin embargo, su código genético sigue vivo. En este ERP Zero-Frameworks en Nod
 
 ---
 
+### 2.6. PowerBuilder (Powersoft / Sybase, 1991): El Joven Héroe de Vida Corta pero Intensa
+
+> *"Hubo una vez un joven héroe cuya vida fue corta pero intensa. Por designios de la vida ya no está con nosotros, pero su valor y legado son incuestionables."*
+
+- **Historia:**
+  Creado por Powersoft en 1991 y adquirido por Sybase en 1994, PowerBuilder fue la herramienta de desarrollo RAD (*Rapid Application Development*) más poderosa de los años 90 para aplicaciones empresariales cliente/servidor. En su época de gloria llegó a ser la herramienta número uno de desarrollo de software corporativo en Fortune 500, con millones de líneas de código en bancos, aseguradoras, ERPs de manufactura y sistemas de recursos humanos.
+  
+  Su vida fue brillante pero corta: la revolución de la web le cortó el paso, y Sybase no fue capaz de reinventarlo a tiempo para el nuevo paradigma. Hoy sobrevive como reliquia de mantenimiento en sistemas heredados (*legacy*) que nadie se atreve a migrar porque "funciona perfectamente desde 1997".
+
+- **Las Batallas que Ganó:**
+  1. **El DataWindow (El Componente más Sofisticado del Siglo XX):**
+     El `DataWindow` de PowerBuilder fue literalmente un milagro de ingeniería: un componente que se conectaba directamente a un query SQL, entendía la estructura de los datos, mostraba la grilla de resultados, permitía edición en línea, validación de tipos, paginación y manejo de errores, **todo con cero código adicional**.
+     Era un `<DataGrid>` moderno, un ORM, un formulario de validación y un reporte visual en un solo objeto de arrastrar y soltar. No se ha construido nada exactamente igual en la web moderna.
+  2. **Arquitectura de Componentes Distribuidos (Distributed PowerBuilder):**
+     Antes de existir REST o GraphQL, PowerBuilder resolvió la arquitectura distribuida con componentes de objetos que corrían en servidores de aplicaciones dedicados, exponiendo interfaces de negocio a múltiples clientes simultáneos.
+  3. **El Generador de Reportes Empresariales Integrado:**
+     Sin instalar ninguna librería externa, PowerBuilder generaba reportes de impresión de grado contable con cabeceras, pie de páginas, subtotales y exportación a impresoras matriciales, directamente desde el IDE.
+
+- **Su Legado en nuestro ERP:**
+  - El concepto del `DataWindow` es el ancestro espiritual de los **DataTables** del frontend moderno, los **reportes PDF** que integraremos en el módulo de facturación (`bil_`) y los **grids de inventario** del módulo de productos (`prd_`).
+  - La filosofía de **un objeto que une datos + validación + presentación** fue finalmente reinterpretada 20 años después por frameworks como React Query, TanStack Table y nuestros propios esquemas Zod que unifican contrato de entrada, validación y documentación.
+
+- **El Epitafio:**
+  > PowerBuilder llegó demasiado pronto para la web y demasiado tarde para sobrevivir a ella. Pero en los edificios de los bancos ecuatorianos, venezolanos y latinoamericanos, sus sistemas todavía corren en producción hoy mismo. Eso es inmortalidad a su manera.
+
+---
+
 ## 3. El Panteón Universal Completo del Software Empresarial
 
 Con la incorporación del Cenotafio de los Héroes Caídos, el repositorio `node-erp-app` posee la genealogía arquitectónica más completa y documentada que se haya ensamblado:
@@ -88,11 +115,12 @@ Con la incorporación del Cenotafio de los Héroes Caídos, el repositorio `node
  │                      EL PANTEÓN UNIVERSAL DE LA ARQUITECTURA                           │
  ├────────────────────────────────────────────────────────────────────────────────────────┤
  │ 🏛️ LOS HÉROES CAÍDOS (Los Cimientos Primordiales):                                     │
- │ • Smalltalk:    Patrón MVC, Orientación a Objetos pura, TDD (SUnit).                   │
- │ • Erlang / OTP: Filosofía "Let it Crash", Aislamiento de procesos, Resiliencia pura.  │
- │ • Delphi:       Arquitectura de ERPs transaccionales, Linaje de TypeScript.            │
- │ • Perl:         Expresiones Regulares (PCRE), Ecosistemas de paquetes.                │
- │ • Lisp:         Funciones de orden superior, Closures, Garbage Collection.             │
+ │ • Smalltalk:     Patrón MVC, Orientación a Objetos pura, TDD (SUnit/Vitest).           │
+ │ • Erlang / OTP:  Filosofía "Let it Crash", Aislamiento de procesos, Resiliencia pura. │
+ │ • Delphi:        Arquitectura de ERPs transaccionales, Linaje de TypeScript.           │
+ │ • Perl:          Expresiones Regulares (PCRE), Ecosistemas de paquetes (npm).          │
+ │ • Lisp:          Funciones de orden superior, Closures, Garbage Collection.            │
+ │ • PowerBuilder:  El DataWindow (Data+Validación+UI en un objeto), RAD Empresarial.    │
  ├────────────────────────────────────────────────────────────────────────────────────────┤
  │ ⚔️ LOS VETERANOS HEROICOS (Estructura y Longevidad):                                   │
  │ • Ruby on Rails: Convención sobre Configuración, Paternidad de Migraciones, TDD.       │
