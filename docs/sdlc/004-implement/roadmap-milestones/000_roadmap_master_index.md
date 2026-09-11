@@ -34,8 +34,8 @@ docs/sdlc/004-implement/roadmap-milestones/
 | Hito | Nombre del Hito | Clasificación Arquitectónica | Precedencia Obligatoria | Estado |
 |:---:|---|:---:|---|:---:|
 | **001** | Runtime Base HTTP, DB & Migraciones | Infraestructura de Base (Nivel 1) | Ninguna (Génesis del repo) | ✅ **COMPLETADO (100%)** |
-| **002** | Infraestructura Transversal de Resiliencia | Infraestructura Transversal (Nivel 2) | Requiere Hito 001 | ⏳ **SIGUIENTE A EJECUTAR** |
-| **003** | Módulo IAM (`auth/`) & Policies ABAC | Dominio de Seguridad e Identidad | Requiere Hito 002 | 📋 Planificado |
+| **002** | Infraestructura Transversal de Resiliencia | Infraestructura Transversal (Nivel 2) | Requiere Hito 001 | ✅ **COMPLETADO (100%)** |
+| **003** | Módulo IAM (`auth/`) & Policies ABAC | Dominio de Seguridad e Identidad | Requiere Hito 002 | ⏳ **SIGUIENTE A EJECUTAR** |
 | **004** | Enlace y Hardening de `users/` | Dominio de Usuarios y Roles | Requiere Hito 003 | 📋 Planificado |
 | **005** | Módulo Jerárquico `organization/` | Dominio Corporativo Multi-Tenant | Requiere Hito 003 y 004 | 📋 Planificado |
 | **006** | Catálogo e Inventario (`products/`) | Dominio Comercial (Catálogo) | Requiere Hito 005 | 📋 Planificado |

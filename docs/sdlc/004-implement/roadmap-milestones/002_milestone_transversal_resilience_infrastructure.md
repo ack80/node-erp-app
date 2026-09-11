@@ -5,7 +5,7 @@
 | **Hito** | 002 |
 | **Clasificación** | Infraestructura Transversal (Capa 2: Resiliencia y Contratos para Features) |
 | **Precedencia Requerida** | Hito 001 completado |
-| **Estado** | ⏳ **SIGUIENTE EN COLA DE IMPLEMENTACIÓN** |
+| **Estado** | ✅ **COMPLETADO** |
 | **Linaje de Referencia** | Era 001 (Mainframe ACID), Era 002 (SAP LUW), Era 005 (Laravel / ASP.NET Core) |
 
 ---
@@ -63,7 +63,7 @@ Antes de construir el login o ampliar los endpoints de usuarios, debemos forjar 
 
 ## 3. Criterio de Aceptación del Hito
 
-- [ ] `withTransaction` probado al 100% con tests unitarios en Vitest.
-- [ ] Peticiones HTTP reciben cabecera `X-Correlation-ID` en respuesta.
-- [ ] Errores 400 emiten `Content-Type: application/problem+json` con su `traceId`.
-- [ ] Suite de pruebas pasando sin regresiones.
+- [x] `withTransaction` probado al 100% con tests unitarios en Vitest.
+- [x] Peticiones HTTP reciben cabecera `X-Correlation-ID` en respuesta.
+- [x] Errores 400 emiten `Content-Type: application/problem+json` con su `traceId`.
+- [x] Suite de pruebas pasando sin regresiones.
